@@ -3,5 +3,6 @@
 --interp
 
 -D haxe-next
+-D haxeJSON
 
 -lib json2object
