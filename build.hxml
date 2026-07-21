@@ -1,0 +1,7 @@
+-cp src
+-main Main
+--interp
+
+-D haxe-next
+
+-lib json2object
