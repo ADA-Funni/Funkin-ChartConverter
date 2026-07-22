@@ -8,11 +8,16 @@ import sys.FileSystem;
 
 class Main {
     static function main() {
-        for (songId in FileSystem.readDirectory('assets/songs')) {
-            createDirectory('export/songs/${songId.toLowerCase()}');
-            createDirectory('export/data/songs/${songId.toLowerCase()}');
+        createDirectory('assets/songs');
+        createDirectory('assets/data');
 
-            var psychChart:Dynamic = Json.parse(File.getContent('assets/songs/$songId/$songId.json')).song;
+        for (songId in FileSystem.readDirectory('assets/songs')) {
+            var isPsychV1Chart:Bool = false;
+            var psychChart:Dynamic = Json.parse(File.getContent(FileSystem.exists('assets/data/$songId/$songId.json') ? 'assets/data/$songId/$songId.json' : 'assets/songs/$songId/$songId.json'));
+            isPsychV1Chart = psychChart?.format != null;
+
+            if (!isPsychV1Chart)
+                psychChart = psychChart.song;
 
             var vsliceChart:Dynamic = {
                 version: "2.0.0",
@@ -37,8 +42,8 @@ class Main {
                 version: "2.2.4",
 
                 songName: psychChart.song,
-                artist: 'Unknown',
-                charter: 'Unknown',
+                artist: psychChart?.artist ?? 'Unknown',
+                charter: psychChart?.charter ?? 'Unknown',
                 offsets: {},
                 playData: {
                     difficulties: ["easy", "normal", "hard"],
@@ -62,7 +67,7 @@ class Main {
                     album: 'volume1',
                     stickerPack: "standard-bf"
                 },
-                generatedBy: "ADA_Funni's Psych2VSlice Converter v1.0.0",
+                generatedBy: "ADA_Funni's Funkin' Chart Converter v1.0.0",
                 timeChanges: null
             };
 
@@ -104,38 +109,8 @@ class Main {
             vsliceChart.events = daEvents;
             vsliceMeta.timeChanges = daTimeChanges;
 
-            switch (vsliceMeta.songName)
-			{
-				case "Mindless":
-					vsliceMeta.artist = 'Sevc_Ext_277';
-
-				case "Blessed by Swords":
-					vsliceMeta.artist = 'vtm1ns';
-
-				case "Brotherly Love":
-					vsliceMeta.artist = 'kylevi';
-
-				case "Suffering Siblings":
-					vsliceMeta.artist = 'Awe (feat. Saster)';
-
-				case "Come Along With Me":
-					vsliceMeta.artist = 'Awe';
-
-				case "Child's Play":
-					vsliceMeta.artist = 'Svelter Meekins';
-
-				case "My Amazing World":
-					vsliceMeta.artist = 'Corn_Yumi';
-
-				case "Retcon":
-					vsliceMeta.artist = 'Rareblin (feat. PATTYDECAFFY)';
-
-				case "Forgotten World":
-					vsliceMeta.artist = 'Awe';
-
-				case "No Hero Remix":
-					vsliceMeta.artist = 'Rundown';
-			}
+            createDirectory('export/songs/${songId.toLowerCase()}');
+            createDirectory('export/data/songs/${songId.toLowerCase()}');
 
             File.saveContent('export/data/songs/${songId.toLowerCase()}/${songId.toLowerCase()}-chart.json', Json.stringify(vsliceChart, null, '  '));
             File.saveContent('export/data/songs/${songId.toLowerCase()}/${songId.toLowerCase()}-metadata.json', Json.stringify(vsliceMeta, null, '  '));
