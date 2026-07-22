@@ -8,6 +8,7 @@ import sys.FileSystem;
 
 class Main {
     static function main() {
+        // Make sure nobody does an oopsie
         createDirectory('assets/songs');
         createDirectory('assets/data');
 
