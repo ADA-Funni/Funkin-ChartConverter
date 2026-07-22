@@ -78,16 +78,15 @@ class Main {
 
             var theNotes:Array<Dynamic> = [];
             var psychSections:Array<Dynamic> = cast psychChart.notes;
+            
             for (i=>section in psychSections) {
                 final sectionTime:Float = ((((60 / (section.changeBPM ? section?.bpm : psychChart.bpm)) * 1000) * 4) * i);
 
-                if (section.changeBPM) {
+                if (section.changeBPM)
                     daTimeChanges.push({t: sectionTime, b: 0, bpm: section.bpm, bt: [4,4,4,4], d: 4, n: section?.sectionBeats ?? Math.floor(section.lengthInSteps / 16)});
-                }
 
-                if (i != 0 && section.mustHitSection != psychSections[i - 1].mustHitSection) {
+                if (i != 0 && section.mustHitSection != psychSections[i - 1].mustHitSection)
                     daEvents.push({t: sectionTime ?? 0, e: "FocusCamera", v: section.mustHitSection ? 0 : 1});
-                }
 
                 for (note in cast(section.sectionNotes, Array<Dynamic>)) {
                     var noteDir:Int = note[1];
@@ -102,6 +101,7 @@ class Main {
                     theNotes.push({t: note[0], d: noteDir, l: note[2], k: note[3]});
                 }
             }
+
             notes.set('hard', theNotes);
             
             vsliceChart.scrollSpeed = speed;
