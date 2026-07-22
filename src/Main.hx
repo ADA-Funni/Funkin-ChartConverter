@@ -92,7 +92,7 @@ class Main {
                 for (note in cast(section.sectionNotes, Array<Dynamic>)) {
                     var noteDir:Int = note[1];
 
-                    if (!section.mustHitSection) {
+                    if (!isPsychV1Chart && !section.mustHitSection) {
                         if (noteDir > 3)
                             noteDir -= 4;
                         else if (noteDir < 4)
