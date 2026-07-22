@@ -3,7 +3,6 @@ package;
 import haxe.Json;
 import haxe.io.Path;
 import sys.io.File;
-import haxe.io.Bytes;
 import sys.FileSystem;
 
 class Main {
